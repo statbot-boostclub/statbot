@@ -1,11 +1,15 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./firebase-key.json'); // Remplace la lecture via process.env
+const serviceAccount = require('./firebase_config.json');
 
-admin.initializeApp({
+const app = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://boostclub-bot-default-rtdb.europe-west1.firebasedatabase.app"
+  databaseURL: 'https://statbot-626ff-default-rtdb.europe-west1.firebasedatabase.app' // ✅ Spécifique à ton projet
 });
 
-const dbRealtime = admin.database();      // Pour /score
+const dbRealtime = admin.database();
 
-module.exports = { dbRealtime, dbFirestore };
+module.exports = {
+  database: dbRealtime,
+  dbRealtime,
+  app
+};
