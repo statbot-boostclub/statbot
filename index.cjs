@@ -145,3 +145,22 @@ Les plus réguliers reçoivent le rôle **BoostStar** 🌟 pour valoriser leur p
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
+// 🟡 Render keep-alive (pour éviter l’arrêt automatique)
+const express = require('express');
+const http = require('http');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('StatBot actif 🚀');
+});
+
+app.listen(PORT, () => {
+  console.log(`🟢 Serveur HTTP actif sur le port ${PORT}`);
+});
+
+setInterval(() => {
+  http.get(`http://localhost:${PORT}`, res => {
+    console.log(`🔁 Ping Render : ${res.statusCode}`);
+  });
+}, 5 * 60 * 1000);
