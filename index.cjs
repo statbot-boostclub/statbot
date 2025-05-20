@@ -4,11 +4,13 @@ const getScore = require('./getScore.cjs');
 const getTop5 = require('./getTop5.cjs');
 const updateScore = require('./updateScore.cjs');
 
+const PORT = process.env.PORT || 10000;
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMembers
   ]
 });
