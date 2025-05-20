@@ -27,34 +27,27 @@ client.on(Events.InteractionCreate, async interaction => {
  // /score
 if (commandName === 'score') {
   try {
-    await interaction.deferReply({ flags: 64 }); // 👈 utilise flags au lieu de ephemeral
+    await interaction.deferReply({ flags: 64 }); // 👈 immédiat, et pas deprecated
 
     const userData = await getScore(interaction.user.id);
 
     if (userData) {
-      await interaction.editReply(`🎯 Ton score actuel est de **${userData.total}** points.`);
+      return interaction.editReply(`🎯 Ton score actuel est de **${userData.total}** points.`);
     } else {
-      await interaction.editReply("🙈 Tu n'as pas encore de points cette semaine.");
+      return interaction.editReply("🙈 Tu n'as pas encore de points cette semaine.");
     }
   } catch (err) {
     console.error("❌ Erreur dans /score :", err);
 
-    // ⚠️ Essayer fallback si l'interaction n'est pas encore traitée
-    try {
-      if (!interaction.deferred && !interaction.replied) {
-        await interaction.reply({
-          content: "⚠️ Impossible de récupérer ton score pour le moment.",
-          flags: 64
-        });
-      } else {
-        await interaction.editReply("⚠️ Impossible de récupérer ton score pour le moment.");
-      }
-    } catch (fallbackError) {
-      console.error("❌ Erreur secondaire dans le fallback /score :", fallbackError);
+    if (!interaction.replied && !interaction.deferred) {
+      return interaction.reply({
+        content: "⚠️ Impossible de récupérer ton score pour le moment.",
+      });
     }
+
+    return interaction.editReply("⚠️ Impossible de récupérer ton score pour le moment.");
   }
 }
-
 
   // /top5
   if (commandName === 'top5') {
