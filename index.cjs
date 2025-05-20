@@ -24,22 +24,30 @@ client.on(Events.InteractionCreate, async interaction => {
 
   const { commandName } = interaction;
 
-  // /score
-  if (commandName === 'score') {
-    try {
-      await interaction.deferReply();
-      const userData = await getScore(interaction.user.id);
+ // /score
+if (commandName === 'score') {
+  try {
+    await interaction.deferReply({ ephemeral: true }); // 👈 réponse discrète
 
-      if (userData) {
-        await interaction.editReply(`🎯 Ton score actuel est de **${userData.total}** points.`);
-      } else {
-        await interaction.editReply("🙈 Tu n'as pas encore de points cette semaine.");
-      }
-    } catch (err) {
-      console.error("❌ Erreur dans /score :", err);
-      await interaction.editReply("⚠️ Impossible de récupérer ton score pour le moment.");
+    const userData = await getScore(interaction.user.id);
+
+    if (userData) {
+      await interaction.editReply(`🎯 Ton score actuel est de **${userData.total}** points.`);
+    } else {
+      await interaction.editReply("🙈 Tu n'as pas encore de points cette semaine.");
+    }
+  } catch (err) {
+    console.error("❌ Erreur dans /score :", err);
+
+    // ⚠️ Si deferReply a échoué → reply simple
+    if (!interaction.replied && !interaction.deferred) {
+      await interaction.reply({
+        content: "⚠️ Impossible de récupérer ton score pour le moment.",
+        ephemeral: true
+      });
     }
   }
+}
 
   // /top5
   if (commandName === 'top5') {
