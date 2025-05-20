@@ -1,7 +1,7 @@
-const admin = require('./firebase.cjs');
+const { dbRealtime } = require('./firebase.cjs');
 
 async function getScore(userId) {
-  const userRef = admin.database().ref(`scores/${userId}`);
+  const userRef = dbRealtime.ref(`scores/${userId}`);
   const snapshot = await userRef.get();
 
   if (!snapshot.exists()) return null;

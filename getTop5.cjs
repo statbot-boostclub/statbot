@@ -1,7 +1,7 @@
-const { database } = require('./firebase.cjs');
+const { dbRealtime } = require('./firebase.cjs');
 
 async function getTop5() {
-  const snapshot = await database.ref('scores').get();
+  const snapshot = await dbRealtime.ref('scores').get();
   if (!snapshot.exists()) return [];
 
   const all = Object.entries(snapshot.val())
