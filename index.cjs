@@ -58,6 +58,24 @@ client.on(Events.InteractionCreate, async interaction => {
       return interaction.editReply("⚠️ Une erreur est survenue en récupérant le top 5.");
     }
   }
+  // /help
+  if (commandName === 'help') {
+    const message = `**Bienvenue sur StatBot 🎉**
+
+Voici tout ce que tu peux faire avec les commandes Slash ⬇️ :
+
+🎯 **Commandes utiles :**  
+• **/étoile** → Félicite un membre pour une qualité 💛  
+• **/score** → Consulte ton score de la semaine 📈  
+• **/top5** → Découvre les 5 membres les plus engagés cette semaine 🔥
+
+🏆 **Système de points :**  
+Chaque message dans certains salons (planning, update, bilan, papotages...) te fait gagner des points.  
+Les plus réguliers reçoivent le rôle **BoostStar** 🌟 pour valoriser leur présence et leur élan.`;
+
+    await interaction.reply({ content: message, flags: 64 });
+  }
+
 
   // /étoile
   if (commandName === 'étoile') {
@@ -120,7 +138,7 @@ client.on(Events.InteractionCreate, async interaction => {
       console.error("❌ Erreur dans /étoile :", err);
       await interaction.reply({
         content: "⚠️ Une erreur est survenue en attribuant l’étoile.",
-        ephemeral: true
+        flags: 64
       });
     }
   }

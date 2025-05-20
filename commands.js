@@ -7,6 +7,10 @@ const commands = [
     .setDescription("Affiche ton score actuel 🎯"),
 
   new SlashCommandBuilder()
+  .setName('help')
+  .setDescription("Statbot : Affiche la liste des commandes disponibles 🧭"),
+
+  new SlashCommandBuilder()
     .setName('top5')
     .setDescription("Affiche le top 5 des scores 🌟"),
 
