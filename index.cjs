@@ -144,6 +144,33 @@ Les plus réguliers reçoivent le rôle **BoostStar** 🌟 pour valoriser leur p
   }
 });
 
+client.on(Events.MessageCreate, async message => {
+  // Ignore les messages du bot lui-même
+  if (message.author.bot) return;
+
+  const salon = message.channel.name;
+  const scoreMap = {
+    '📅lundi-planning': 10,
+    '📊mercredi-update': 5,
+    '📝vendredi-bilan': 5,
+    '🌟réussites-du-jour': 5,
+    '💭besoin-de-vos-avis': 3,
+    '💻open-space': 1,
+    '💬papotages': 1,
+    '🤸bien-être': 1
+  };
+
+  const points = scoreMap[salon];
+  if (!points) return; // Pas un salon comptabilisé
+
+  try {
+    await updateScore(message.author.id, message.member.displayName, points, salon);
+    console.log(`✅ +${points} points pour ${message.member.displayName} dans ${salon}`);
+  } catch (err) {
+    console.error("❌ Erreur updateScore :", err);
+  }
+});
+
 client.login(process.env.DISCORD_TOKEN);
 
 // 🟡 Render keep-alive (pour éviter l’arrêt automatique)
