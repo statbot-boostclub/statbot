@@ -26,8 +26,11 @@ client.on(Events.InteractionCreate, async interaction => {
 
  // /score
 if (commandName === 'score') {
+  const start = Date.now();
+
   try {
-    await interaction.deferReply({ flags: 64 }); // 👈 immédiat, et pas deprecated
+    // Répondre le plus vite possible
+    await interaction.deferReply({ flags: 64 });
 
     const userData = await getScore(interaction.user.id);
 
@@ -39,13 +42,11 @@ if (commandName === 'score') {
   } catch (err) {
     console.error("❌ Erreur dans /score :", err);
 
-    if (!interaction.replied && !interaction.deferred) {
-      return interaction.reply({
-        content: "⚠️ Impossible de récupérer ton score pour le moment.",
-      });
+    try {
+      await interaction.editReply("⚠️ Impossible de récupérer ton score pour le moment.");
+    } catch (e) {
+      console.error("❌ Impossible d’éditer la réponse :", e);
     }
-
-    return interaction.editReply("⚠️ Impossible de récupérer ton score pour le moment.");
   }
 }
 
